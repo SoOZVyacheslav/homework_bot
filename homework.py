@@ -32,7 +32,7 @@ logging.basicConfig(
     filename='bot.log',
     filemode='w',
     encoding='utf--8',
-    )
+)
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 
@@ -72,12 +72,12 @@ def get_api_answer(timestamp):
         raise exceptions.ApiException(
             'API недоступна'
             f'{ENDPOINT}'
-            )
+        )
     finally:
         if response.status_code != HTTPStatus.OK:
             raise exceptions.ApiException(
                 f'{response.status_code} Проблема с доступом к странице'
-                )
+            )
     return response.json()
 
 
