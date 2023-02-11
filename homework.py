@@ -39,17 +39,14 @@ logger.addHandler(logging.StreamHandler())
 
 def check_tokens():
     """Проверяем токены."""
-    for token in [PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]:
-        if not token:
-            logger.critical('Отсутствуют токены')
-            raise exceptions.CriticalException
+    return all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID])
 
 
 def send_message(bot, message):
     """Отправляет сообщение в телеграм."""
     try:
-        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
         logger.debug(f'Сообщение отправлено: {message}')
+        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
     except telegram.TelegramError as error:
         logger.error(f'Cообщение не отправленно: {error}')
 
@@ -57,16 +54,16 @@ def send_message(bot, message):
 def get_api_answer(timestamp):
     """Получить ответ от сервера практикума по API."""
     current_timestamp = timestamp
-    payload = {'from_date': current_timestamp}
+    params_request = {
+        'url': ENDPOINT,
+        'headers': HEADERS,
+        'params': {'from_date': current_timestamp}
+    }
     try:
-        response = requests.get(
-            url=ENDPOINT,
-            headers=HEADERS,
-            params=payload
-        )
+        response = requests.get(**params_request)
         message = (
-            f'Начал выполняться запрос: {ENDPOINT}, {HEADERS}, {payload}.'
-        )
+            'Начал выполняться запрос: {url}, {headers}, {params}.'
+        ).format(**params_request)
         logging.info(message)
     except requests.exceptions.RequestException:
         raise exceptions.ApiException(
@@ -111,7 +108,9 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
-    check_tokens()
+    if not check_tokens():
+        logger.critical('Отсутствуют токены')
+        raise SystemExit
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     while True:
@@ -130,6 +129,7 @@ def main():
             message = f'Сбой в работе программы: {error}'
             send_message(bot, message)
             logger.error(message)
+        finally:
             time.sleep(RETRY_PERIOD)
 
 
