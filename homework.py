@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import time
 from http import HTTPStatus
 
@@ -109,8 +110,8 @@ def parse_status(homework):
 def main():
     """Основная логика работы бота."""
     if not check_tokens():
-        logger.critical('Отсутствуют токены')
-        raise SystemExit
+        logger.critical('Отсутствуют токены. Запрос остановлен')
+        sys.exit(0)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     while True:
@@ -124,7 +125,7 @@ def main():
                 logger.info('Повторный запрос через 10 минут')
             else:
                 logger.info('Отсутствует новая информация')
-            time.sleep(RETRY_PERIOD)
+            time.sleep(RETRY_PERIOD)    
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             send_message(bot, message)
