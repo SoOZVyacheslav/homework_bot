@@ -40,7 +40,7 @@ logger.addHandler(logging.StreamHandler())
 
 def check_tokens():
     """Проверяем токены."""
-    return all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID])
+    return all({PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID})
 
 
 def send_message(bot, message):
