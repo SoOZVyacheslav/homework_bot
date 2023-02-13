@@ -125,7 +125,6 @@ def main():
                 logger.info('Повторный запрос через 10 минут')
             else:
                 logger.info('Отсутствует новая информация')
-            time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             send_message(bot, message)
