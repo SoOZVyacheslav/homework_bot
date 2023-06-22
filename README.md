@@ -7,7 +7,6 @@
 # Запуск бота
 - Установите и активируйте виртуальное окружение:  
 ``` python -m venv venv ```
-
 ``` source venv/Scripts/activate ``` 
 - Установите зависимости из файла requirements.txt:   
 ``` pip install -r requirements.txt ```
