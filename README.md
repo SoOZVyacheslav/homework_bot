@@ -6,10 +6,15 @@
 
 # Запуск бота
 - Установите и активируйте виртуальное окружение:  
-``` python -m venv venv ```
-``` source venv/Scripts/activate ``` 
+```
+python -m venv venv
+
+source venv/Scripts/activate 
+ ``` 
 - Установите зависимости из файла requirements.txt:   
-``` pip install -r requirements.txt ```
+```
+pip install -r requirements.txt
+ ```
 - Создаем .env в папке проекта:
 ```
 PRACTICUM_ID - токен полученный с api Я.П.
@@ -17,6 +22,8 @@ BOT_ID - токен бота
 CHAT_ID - id вашего телеграмма
 ```
 - Запускаем бота
-``` python homework.py ```
+```
+python homework.py
+ ```
 
 Автор : Вячеслав Костырка
